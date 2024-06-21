@@ -1,18 +1,17 @@
 package cat.itacademy.barcelonactiva.layache.bilal.s04.t02.n01.model.services;
 
+import cat.itacademy.barcelonactiva.layache.bilal.s04.t02.n01.exceptions.FruitNotFoundException;
 import cat.itacademy.barcelonactiva.layache.bilal.s04.t02.n01.model.domain.Fruit;
-import cat.itacademy.barcelonactiva.layache.bilal.s04.t02.n01.model.repository.FruitInterface;
-import org.aspectj.apache.bcel.classfile.Module;
+import cat.itacademy.barcelonactiva.layache.bilal.s04.t02.n01.model.repository.FruitRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class FruitSeriveImpl implements FruitService{
     @Autowired
-    private FruitInterface fr;
+    private FruitRepo fr;
     @Override
     public Fruit save(Fruit fruit) {
         return fr.save(fruit);
@@ -20,23 +19,27 @@ public class FruitSeriveImpl implements FruitService{
 
     @Override
     public Fruit updateFruit(Fruit fruit) {
+    if(!fr.existsById(fruit.getId())){
+        throw new FruitNotFoundException("No existe");
+    }
         return fr.save(fruit);
     }
 
     @Override
-    public Fruit deleteFruit(int fruitId) {
-         fr.deleteById(fruitId);
-        return null;
+    public void deleteFruit(int fruitId) {
+       if(!fr.existsById(fruitId)){
+           throw new FruitNotFoundException("La fruta con id : "+fruitId + " haz intentado eliminar no existe.");
+       }else {
+           fr.deleteById(fruitId);
+       }
     }
 
     @Override
-    public Fruit getById(int fruitId) {
-        Optional<Fruit> optionalFruit = fr.findById(fruitId);
-        Fruit fruit1 = null;
-        if(optionalFruit.isPresent()){
-             fruit1 = optionalFruit.get();
+    public Optional<Fruit> getById(int fruitId) {
+        if(!fr.existsById(fruitId)){
+            throw new FruitNotFoundException("La fruta con id : "+fruitId + " haz intentado buscar no existe.");
         }
-        return fruit1;
+        return fr.findById(fruitId);
     }
 
     @Override

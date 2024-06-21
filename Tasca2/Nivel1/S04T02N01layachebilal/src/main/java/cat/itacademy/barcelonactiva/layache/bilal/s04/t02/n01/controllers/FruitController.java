@@ -3,13 +3,10 @@ package cat.itacademy.barcelonactiva.layache.bilal.s04.t02.n01.controllers;
 import cat.itacademy.barcelonactiva.layache.bilal.s04.t02.n01.model.domain.Fruit;
 import cat.itacademy.barcelonactiva.layache.bilal.s04.t02.n01.model.services.FruitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -30,20 +27,17 @@ public class FruitController {
     }
     @DeleteMapping("/delete/{fruitId}")
     public ResponseEntity<String> deleteFruit(@PathVariable int fruitId){
-        Fruit fruit1 = fruitService.deleteFruit(fruitId);
-        return ResponseEntity.ok("Deleted!");
+        fruitService.deleteFruit(fruitId);
+        return ResponseEntity.ok("Eliminat");
     }
 
     @GetMapping("/getOne/{fruitId}")
-    public ResponseEntity<String> getById(@PathVariable int fruitId) {
-        Optional<Fruit> optionalFruit = Optional.ofNullable(fruitService.getById(fruitId));
-        Fruit fruit = null;
-        if(optionalFruit.isPresent()){
-            return ResponseEntity.ok(optionalFruit.get().toString());
-        }else {
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No encontrado");
+    public ResponseEntity<Optional<Fruit>> getById(@PathVariable int fruitId) {
+        Optional<Fruit> fruit = fruitService.getById(fruitId);
+        return ResponseEntity.ok().body(fruit);
+
         }
-    }
+
 
     @GetMapping("/getAll")
     public ResponseEntity<String> getAll() {
