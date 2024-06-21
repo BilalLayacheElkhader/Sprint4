@@ -3,18 +3,19 @@ package cat.itacademy.barcelonactiva.layache.bilal.s04.t02.n02.model.services;
 import cat.itacademy.barcelonactiva.layache.bilal.s04.t02.n02.model.domain.Fruit;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public interface FruitService {
     Fruit save(Fruit fruit);
 
     Fruit updateFruit(Fruit fruit);
 
-    Fruit deleteFruit(int fruitId);
+    void deleteFruit(int fruitId);
 
-    Fruit getById(int fruitId);
+    Optional<Fruit> getById(int fruitId);
 
     Iterable<Fruit> getAllFruits();
-    //@Autowired
-   // FruitInterface fr;
+
 
 }
